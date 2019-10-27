@@ -159,10 +159,10 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
     // AlertView
     open var alertView = UIView()
     open var alertViewBgColor = UIColor(red:239/255, green:240/255, blue:242/255, alpha:1.0)
-    fileprivate var alertViewWidth: CGFloat = 270.0
+    fileprivate var alertViewWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 320.0 : 270.0
     fileprivate var alertViewHeightConstraint: NSLayoutConstraint?
     fileprivate var alertViewPadding: CGFloat = 15.0
-    fileprivate var innerContentWidth: CGFloat = 240.0
+    fileprivate var innerContentWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 290.0 : 240.0
     fileprivate let actionSheetBounceHeight: CGFloat = 20.0
 
     // TextAreaScrollView
