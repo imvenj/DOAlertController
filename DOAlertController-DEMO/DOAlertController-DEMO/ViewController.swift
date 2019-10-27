@@ -166,14 +166,14 @@ class ViewController : UITableViewController, UITextFieldDelegate {
             // Listen for changes to the text field's text so that we can toggle the current
             // action's enabled property based on whether the user has entered a sufficiently
             // secure entry.
-            NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleTextFieldTextDidChangeNotification(_:)), name: NSNotification.Name.UITextFieldTextDidChange, object: textField)
+            NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleTextFieldTextDidChangeNotification(_:)), name: UITextField.textDidChangeNotification, object: textField)
             
             textField?.isSecureTextEntry = true
         }
         
         // Stop listening for text change notifications on the text field. This closure will be called in the two action handlers.
-        let removeTextFieldObserver: (Void) -> Void = {
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: alertController.textFields!.first)
+        let removeTextFieldObserver: () -> Void = {
+            NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: alertController.textFields!.first)
         }
         
         // Create the actions.
@@ -242,7 +242,7 @@ class ViewController : UITableViewController, UITextFieldDelegate {
             label.text = "ID"
             label.font = UIFont(name: "GillSans-Bold", size: 15.0)
             textField?.leftView = label
-            textField?.leftViewMode = UITextFieldViewMode.always
+            textField?.leftViewMode = UITextField.ViewMode.always
             
             textField?.delegate = self
         }
@@ -260,7 +260,7 @@ class ViewController : UITableViewController, UITextFieldDelegate {
             label.text = "PASS"
             label.font = UIFont(name: "GillSans-Bold", size: 15.0)
             textField?.leftView = label
-            textField?.leftViewMode = UITextFieldViewMode.always
+            textField?.leftViewMode = UITextField.ViewMode.always
             
             textField?.delegate = self
         }
@@ -391,11 +391,11 @@ class ViewController : UITableViewController, UITextFieldDelegate {
     
     // MARK: UITextFieldTextDidChangeNotification
     
-    func handleTextFieldTextDidChangeNotification(_ notification: Notification) {
+    @objc func handleTextFieldTextDidChangeNotification(_ notification: Notification) {
         let textField = notification.object as! UITextField
         
         // Enforce a minimum length of >= 5 characters for secure text alerts.
-        secureTextAlertAction!.enabled = textField.text!.characters.count >= 5
+        secureTextAlertAction!.enabled = textField.text!.count >= 5
     }
     
     // MARK: UITextFieldDelegate Methods
