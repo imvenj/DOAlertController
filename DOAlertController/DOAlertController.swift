@@ -329,6 +329,13 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
 
         // AlertView
         containerView.addSubview(alertView)
+        if #available(iOS 11.0, *) {
+            alertView.layer.cornerRadius = 6.0
+            alertView.layer.masksToBounds = true
+            if (!isAlert()) {
+                alertView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            }
+        }
 
         // TextAreaScrollView
         alertView.addSubview(textAreaScrollView)
