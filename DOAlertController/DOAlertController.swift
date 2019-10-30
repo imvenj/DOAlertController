@@ -191,7 +191,7 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
     open var textFieldBorderColor = UIColor(red: 203.0/255, green: 203.0/255, blue: 203.0/255, alpha: 1.0)
 
     // TextFields
-    fileprivate(set) var textFields: [AnyObject]?
+    open var textFields: [UITextField] = []
     fileprivate let textFieldHeight: CGFloat = 30.0
     open var textFieldBgColor = UIColor.white
     fileprivate let textFieldCornerRadius: CGFloat = 4.0
@@ -457,7 +457,7 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
         //------------------------------
         let hasTitle: Bool = title != nil && title != ""
         let hasMessage: Bool = message != nil && message != ""
-        let hasTextField: Bool = textFields != nil && textFields!.count > 0
+        let hasTextField: Bool = textFields.count > 0
 
         var textAreaPositionY: CGFloat = alertViewPadding
         if (!isAlert()) {textAreaPositionY += alertViewPadding}
@@ -504,8 +504,7 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
             var textFieldContainerHeight: CGFloat = 0.0
 
             // TextFields
-            for (_, obj) in (textFields!).enumerated() {
-                let textField = obj as! UITextField
+            for (_, textField) in textFields.enumerated() {
                 textField.frame = CGRect(x: 0.0, y: textFieldContainerHeight, width: innerContentWidth, height: textField.frame.height)
                 textFieldContainerHeight += textField.frame.height + 0.5
             }
@@ -728,16 +727,13 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
     }
 
     // Adds a text field to an alert.
-    open func addTextFieldWithConfigurationHandler(_ configurationHandler: ((UITextField?) -> Void)!) {
+    open func addTextField(_ configurationHandler: ((UITextField?) -> Void)!) {
 
         // You can add a text field only if the preferredStyle property is set to DOAlertControllerStyle.Alert.
         if (!isAlert()) {
             let error: NSError? = nil
             NSException.raise(NSExceptionName(rawValue: "NSInternalInconsistencyException"), format: "Text fields can only be added to an alert controller of style DOAlertControllerStyleAlert", arguments:getVaList([error ?? "nil"]))
             return
-        }
-        if (textFields == nil) {
-            textFields = []
         }
 
         let textField = UITextField()
@@ -750,7 +746,7 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
             configurationHandler(textField)
         }
 
-        textFields!.append(textField)
+        textFields.append(textField)
         textFieldContainerView.addSubview(textField)
     }
 
