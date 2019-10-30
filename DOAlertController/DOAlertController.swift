@@ -302,12 +302,7 @@ open class DOAlertController : UIViewController, UITextFieldDelegate, UIViewCont
         layoutFlg = true
 
         // Screen Size
-        var screenSize = presenting != nil ? presenting!.view.bounds.size : UIScreen.main.bounds.size
-        if ((UIDevice.current.systemVersion as NSString).floatValue < 8.0) {
-            if (currentOrientation().isLandscape) {
-                screenSize = CGSize(width: screenSize.height, height: screenSize.width)
-            }
-        }
+        let screenSize = UIScreen.main.bounds.size
 
         // variable for ActionSheet
         if (!isAlert()) {
